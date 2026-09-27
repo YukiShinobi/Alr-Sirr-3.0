@@ -8,33 +8,36 @@ const dataFile = path.join(dataDir, 'order.json');
 
 export const defaults = {
   members: {},
-  missions: [],
+  quests: [],
   sanctuaries: [],
-  cells: [],
-  intel: [],
-  deadDrops: [],
+  circles: [],
+  lore: [],
+  messages: [],
   decrees: [],
   reports: [],
   sanctions: [],
   audit: [],
-  countersigns: [
+  phrases: [
     { challenge: 'When the moon is hidden?', response: 'Its light still remains.' },
     { challenge: 'Who judges the crown?', response: 'Those beyond its reach.' },
     { challenge: 'What survives the eclipse?', response: 'The Order.' },
     { challenge: 'What is given may be?', response: 'Taken.' },
     { challenge: 'Where does Qamar stand?', response: 'Between light and shadow.' }
   ],
-  settings: {
-    directiveIndex: 0
-  }
+  settings: { directiveIndex: 0 }
 };
 
 let queue = Promise.resolve();
 
-function mergeDefaults(raw = {}) {
+function migrate(raw = {}) {
   return {
     ...structuredClone(defaults),
     ...raw,
+    quests: raw.quests ?? raw.missions ?? [],
+    circles: raw.circles ?? raw.cells ?? [],
+    lore: raw.lore ?? raw.intel ?? [],
+    messages: raw.messages ?? raw.deadDrops ?? [],
+    phrases: raw.phrases ?? raw.countersigns ?? defaults.phrases,
     settings: { ...defaults.settings, ...(raw.settings ?? {}) }
   };
 }
@@ -51,7 +54,7 @@ async function ensureStore() {
 export async function readStore() {
   await ensureStore();
   const raw = await fs.readFile(dataFile, 'utf8');
-  return mergeDefaults(JSON.parse(raw));
+  return migrate(JSON.parse(raw));
 }
 
 export function updateStore(mutator) {
@@ -65,12 +68,6 @@ export function updateStore(mutator) {
 }
 
 export function addAudit(store, action, actorId, details = {}) {
-  store.audit.push({
-    id: store.audit.length + 1,
-    action,
-    actorId,
-    details,
-    at: new Date().toISOString()
-  });
+  store.audit.push({ id: store.audit.length + 1, action, actorId, details, at: new Date().toISOString() });
   if (store.audit.length > 1000) store.audit = store.audit.slice(-1000);
 }
