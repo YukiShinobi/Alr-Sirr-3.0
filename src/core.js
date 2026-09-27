@@ -71,9 +71,11 @@ export function sanitizeCodename(value) {
   return String(value ?? '').replace(/[@#`*_~|<>]/g, '').trim().slice(0, 32);
 }
 
-export function missionVisibleTo(member, mission) {
-  return mission.status === 'active' && hasClearance(member, mission.clearance);
+export function questVisibleTo(member, quest) {
+  return quest.status === 'active' && hasClearance(member, quest.clearance);
 }
+
+export const missionVisibleTo = questVisibleTo;
 
 export function publicOperative(member) {
   return {
