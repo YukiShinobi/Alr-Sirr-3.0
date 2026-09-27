@@ -1,13 +1,15 @@
 {
   "name": "alr-sirr-3",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
-  "description": "Discord operations bot for The Order of Qamar Minecraft faction.",
+  "description": "Discord roleplay leader bot for The Order of Qamar Minecraft faction.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "test": "node --test",
+    "check": "node --check src/index.js && node --check src/commands.js && node --check src/core.js && node --check src/storage.js"
   },
   "engines": {
     "node": ">=20"
