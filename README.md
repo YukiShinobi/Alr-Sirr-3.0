@@ -1,72 +1,117 @@
 <div align="center">
 
-# Alr-Sirr 3.0
-### Discord command system for The Order of Qamar.
+# Alr-Sirr 3.1
+### The roleplay voice and command system of The Order of Qamar.
 
-**Alr-Sirr** is a Discord bot built for **The Order of Qamar**, a covert Minecraft roleplay faction organized around codenames, clearance rings, operations, sanctuaries, and controlled information flow.
+**Alr-Sirr** is a Discord bot built for **The Order of Qamar**, a Minecraft roleplay faction organized around codenames, rings, quests, circles, lore, merit, bases, and a central leader persona.
 
 ![Status](https://img.shields.io/badge/status-working%20foundation-7a1f1f?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Discord-111827?style=for-the-badge&logo=discord)
 ![Runtime](https://img.shields.io/badge/runtime-Node.js-111827?style=for-the-badge&logo=nodedotjs)
-![Library](https://img.shields.io/badge/library-discord.js-5865F2?style=for-the-badge&logo=discord)
+![Tests](https://img.shields.io/badge/core%20tests-passing-2b2b2b?style=for-the-badge)
 
 </div>
 
 ---
 
-## What it does
+## Role in The Order
 
-Alr-Sirr acts as the digital command layer behind **The Order of Qamar** rather than a generic moderation bot.
+Alr-Sirr is designed to feel like **the leader / voice of The Order**, not a generic utility bot.
 
-Implemented systems include:
+Members use roleplay codenames while Discord staff retain normal moderation visibility. The bot issues briefings, doctrine, decrees, quest assignments, rank decisions and progression feedback while maintaining the faction's atmosphere.
 
-- operational codenames
-- five clearance rings
-- member dossiers
-- admin-controlled ring assignment
-- roleplay mission creation / listing / completion
-- sanctuary records
-- rotating challenge-response countersigns
-- persistent local JSON storage
-- Discord slash-command registration
-- optional Order-admin role gating
-
-## Commands
+## Implemented systems
 
 ```txt
-/order
-/codename set
-/codename view
-/ring assign
-/ring list
-/mission create
-/mission list
-/mission complete
-/sanctuary add
-/sanctuary list
-/countersign
-/dossier
+LEADER
+  counsel responses
+  official decrees
+  daily doctrine broadcasts
+  Order-themed presence
+
+IDENTITY
+  initiation
+  generated codenames
+  custom codenames
+  private dossiers
+
+STRUCTURE
+  five Order rings
+  ring roster
+  roleplay circles / teams
+  merit and standing
+  disciplinary sanctions
+
+MINECRAFT RP
+  quest creation
+  quest acceptance
+  quest briefings
+  quest reports
+  quest completion + merit rewards
+  base / meeting-location registry
+  ring-gated lore archive
+
+ENGINEERING
+  slash-command registration
+  persistent JSON state
+  migration from the earlier data model
+  audit history
+  queued writes
+  optional daily broadcast channel
+  Node test suite
 ```
 
-Sensitive command functions such as ring assignment, mission creation, mission completion, and sanctuary registration require either Discord Administrator permission or the configured Order command role.
-
-## The Order of Qamar
-
-The Order is a covert Minecraft faction built around influence, compartmentalization, and a deliberately grey morality. Its lore centers on balancing power from the shadows rather than open conquest.
-
-The moon represents the coexistence of light and darkness; the faction's black crescent and downward star symbolize restraint and swift judgement.
-
-### Clearance structure
+## Main commands
 
 ```txt
-01  The Outer Veil
-02  The Waxing Ring
-03  The Waning Ring
+/initiate
+/order
+/dossier
+/doctrine
+/leader counsel
+/leader decree
+/codename set
+/codename regenerate
+/ring assign
+/ring roster
+/quest create
+/quest list
+/quest accept
+/quest brief
+/quest report
+/quest complete
+/base add
+/base list
+/circle create
+/circle assign
+/circle mine
+/lore add
+/lore list
+/merit view
+/merit award
+/sanction issue
+/sanction mine
+/protocol
+/help
+```
+
+## Rings
+
+```txt
+01  Outer Veil
+02  Waxing Ring
+03  Waning Ring
 04  The Eclipse
 05  Inner Crescent
 ```
 
-Members operate through codenames, need-to-know information, safe houses, authentication phrases, and mission records.
+Higher rings can access quests, lore and bases intended for lower rings as well as their own level.
+
+## Safety / identity model
+
+Codenames are **roleplay aliases**, not a way to evade moderation. The bot keeps the Discord user ID internally so staff actions, progression and dossiers remain connected to the correct account.
+
+The bot explicitly treats quests, bases, circles and lore as Minecraft-roleplay systems and warns users not to store passwords, personal information, doxxing, threats or real-world illegal plans.
 
 ## Setup
 
@@ -74,51 +119,75 @@ Requirements:
 
 - Node.js 20+
 - a Discord application / bot
-- a Discord server for command registration
+- a Discord server for guild command registration
 
 ```bash
 npm install
 cp .env.example .env
+npm test
+npm run check
 npm start
 ```
 
-Configure `.env`:
+Environment:
 
 ```env
 DISCORD_TOKEN=your_bot_token
 DISCORD_CLIENT_ID=your_application_id
 DISCORD_GUILD_ID=your_server_id
-ORDER_ADMIN_ROLE_ID=optional_command_role_id
+ORDER_ADMIN_ROLE_ID=optional_order_command_role
+ORDER_BROADCAST_CHANNEL_ID=optional_daily_directive_channel
 ```
 
 Never commit the real bot token.
 
+## Testing
+
+The repository includes Node's built-in test runner for the core rules.
+
+Current tests cover:
+
+- ring hierarchy
+- ring access checks
+- unique codename generation
+- codename sanitization
+- quest visibility
+- merit thresholds
+
+Run:
+
+```bash
+npm test
+npm run check
+```
+
+A live Discord integration test still requires valid Discord credentials and an actual test server.
+
 ## Storage
 
-Runtime state is written to:
+Live state is stored in:
 
 ```txt
 data/order.json
 ```
 
-That file is intentionally ignored by Git so live member, mission, and sanctuary data is not committed to the repository.
+The runtime supports migration from the earlier Alr-Sirr data shape so older mission/cell records can be carried into the quest/circle model.
 
 ## Structure
 
 ```txt
 src/
-  index.js       Discord client, handlers, command runtime
-  commands.js    slash-command definitions + ring model
-  storage.js     persistent JSON store
+  index.js       Discord runtime and leader behavior
+  commands.js    slash-command definitions
+  core.js        rings, codenames, merit and access logic
+  storage.js     persistent state, migration and audit history
+
+test/
+  core.test.js   core behavior tests
+
 data/
   .gitkeep
-.env.example
-package.json
 ```
-
-## Direction
-
-This is a working foundation, not the final form. Future expansion can add Discord-role synchronization, richer mission assignment, audit logs, configurable doctrine, encrypted/external persistence, and optional Minecraft-server integration.
 
 ---
 
