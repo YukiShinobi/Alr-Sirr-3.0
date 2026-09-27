@@ -1,14 +1,13 @@
 <div align="center">
 
-# Alr-Sirr 3.1
-### The roleplay voice and command system of The Order of Qamar.
-
-**Alr-Sirr** is a Discord bot built for **The Order of Qamar**, a Minecraft roleplay faction organized around codenames, rings, quests, circles, lore, merit, bases, and a central leader persona.
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&text=ALR-SIRR%203.1&fontAlignY=38&desc=THE%20VOICE%20OF%20THE%20ORDER%20OF%20QAMAR&descAlignY=58&color=0:050505,55:202020,100:5a1616&fontColor=f5f5f5&descColor=d4d4d4" width="100%" />
 
 ![Status](https://img.shields.io/badge/status-working%20foundation-7a1f1f?style=for-the-badge)
-![Platform](https://img.shields.io/badge/platform-Discord-111827?style=for-the-badge&logo=discord)
-![Runtime](https://img.shields.io/badge/runtime-Node.js-111827?style=for-the-badge&logo=nodedotjs)
-![Tests](https://img.shields.io/badge/core%20tests-passing-2b2b2b?style=for-the-badge)
+![Platform](https://img.shields.io/badge/platform-Discord-111111?style=for-the-badge&logo=discord)
+![Runtime](https://img.shields.io/badge/runtime-Node.js-2b2b2b?style=for-the-badge&logo=nodedotjs)
+![Tests](https://img.shields.io/badge/core%20tests-passing-4b5563?style=for-the-badge)
+
+**A Discord roleplay command system built for The Order of Qamar on a Minecraft server.**
 
 </div>
 
@@ -107,11 +106,11 @@ ENGINEERING
 
 Higher rings can access quests, lore and bases intended for lower rings as well as their own level.
 
-## Safety / identity model
+## Identity model
 
 Codenames are **roleplay aliases**, not a way to evade moderation. The bot keeps the Discord user ID internally so staff actions, progression and dossiers remain connected to the correct account.
 
-The bot explicitly treats quests, bases, circles and lore as Minecraft-roleplay systems and warns users not to store passwords, personal information, doxxing, threats or real-world illegal plans.
+The bot treats quests, bases, circles and lore as Minecraft-roleplay systems and rejects the idea of using the system to hide real-world abuse, threats or illegal activity.
 
 ## Setup
 
@@ -143,8 +142,6 @@ Never commit the real bot token.
 
 ## Testing
 
-The repository includes Node's built-in test runner for the core rules.
-
 Current tests cover:
 
 - ring hierarchy
@@ -153,8 +150,6 @@ Current tests cover:
 - codename sanitization
 - quest visibility
 - merit thresholds
-
-Run:
 
 ```bash
 npm test
