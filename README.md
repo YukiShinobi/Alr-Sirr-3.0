@@ -1,159 +1,124 @@
 <div align="center">
 
 # Alr-Sirr 3.0
-### Discord bot and command system for The Order of Qamar.
+### Discord command system for The Order of Qamar.
 
-**Alr-Sirr** is a Discord bot concept designed for a Minecraft roleplay faction inspired by secret-society command structures and the strategic presence of Ra's al Ghul-style leadership.
+**Alr-Sirr** is a Discord bot built for **The Order of Qamar**, a covert Minecraft roleplay faction organized around codenames, clearance rings, operations, sanctuaries, and controlled information flow.
 
-The faction is called **The Order of Qamar** — often shortened to **The Order**.
-
-![Status](https://img.shields.io/badge/status-concept%20%2F%20rebuild-7a1f1f?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-working%20foundation-7a1f1f?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/platform-Discord-111827?style=for-the-badge&logo=discord)
-![Game](https://img.shields.io/badge/world-Minecraft-2b2b2b?style=for-the-badge)
+![Runtime](https://img.shields.io/badge/runtime-Node.js-111827?style=for-the-badge&logo=nodedotjs)
+![Library](https://img.shields.io/badge/library-discord.js-5865F2?style=for-the-badge&logo=discord)
 
 </div>
 
 ---
 
-## What Alr-Sirr is
+## What it does
 
-Alr-Sirr is intended to act as the digital command layer behind **The Order of Qamar**.
+Alr-Sirr acts as the digital command layer behind **The Order of Qamar** rather than a generic moderation bot.
 
-Rather than being a generic utility bot, the idea is for the bot to support the faction's identity, hierarchy, secrecy, operations, and roleplay systems inside a Minecraft community.
+Implemented systems include:
 
-The concept takes inspiration from covert fictional organizations, especially the strategic presence and command style associated with **Ra's al Ghul**, while building its own lore, structure, and identity around The Order.
+- operational codenames
+- five clearance rings
+- member dossiers
+- admin-controlled ring assignment
+- roleplay mission creation / listing / completion
+- sanctuary records
+- rotating challenge-response countersigns
+- persistent local JSON storage
+- Discord slash-command registration
+- optional Order-admin role gating
+
+## Commands
+
+```txt
+/order
+/codename set
+/codename view
+/ring assign
+/ring list
+/mission create
+/mission list
+/mission complete
+/sanctuary add
+/sanctuary list
+/countersign
+/dossier
+```
+
+Sensitive command functions such as ring assignment, mission creation, mission completion, and sanctuary registration require either Discord Administrator permission or the configured Order command role.
 
 ## The Order of Qamar
 
-The Order of Qamar is a covert organization that operates through influence rather than open conquest.
+The Order is a covert Minecraft faction built around influence, compartmentalization, and a deliberately grey morality. Its lore centers on balancing power from the shadows rather than open conquest.
 
-Its lore presents the group as an old network that spent centuries working through courts, trade routes, intelligence networks, and political influence before extending its reach into **Nevúnat**.
+The moon represents the coexistence of light and darkness; the faction's black crescent and downward star symbolize restraint and swift judgement.
 
-The Order does not define itself through simple ideas of good or evil. It operates as an anti-hero organization whose actions are justified through concepts such as:
-
-- restoring balance
-- correcting abuses of power
-- punishing betrayal
-- preventing greater instability
-- manipulating events from the background
-- protecting the organization's long-term survival
-
-Its core philosophy is that **power is given for a reason — and what is given can also be taken away.**
-
-## The symbol
-
-The Order's symbol is built around a **black crescent and a sharp downward-pointing star**.
-
-```txt
-CRESCENT    restraint / balance
-STAR        swift judgement
-MOON        light that still exists inside darkness
-```
-
-The moon is not treated as an object of worship. It represents the coexistence of light and darkness and the idea that both can be necessary to preserve order.
-
-## Organization
-
-The Order is designed around compartmentalization and anonymity.
-
-Members use **code names** rather than normal identities so information can move through the organization without exposing everyone inside it.
-
-The proposed hierarchy uses ring-like layers, with deeper circles carrying more access and authority.
-
-### Known ring concepts
+### Clearance structure
 
 ```txt
 01  The Outer Veil
-    Lowest-access operatives and expendable assets.
-
 02  The Waxing Ring
-    Operators, specialists, medics and support personnel.
-
 03  The Waning Ring
-    Suppliers, recovery teams and logistical support.
-
 04  The Eclipse
-    High-clearance operatives trusted with infiltration,
-    political influence and major operations.
-
-05  Inner leadership
-    Highest-clearance command structure surrounding the leader.
+05  Inner Crescent
 ```
 
-The hierarchy is intentionally designed so that knowledge is distributed on a need-to-know basis.
+Members operate through codenames, need-to-know information, safe houses, authentication phrases, and mission records.
 
-## Operational ideas
+## Setup
 
-The wider concept includes:
+Requirements:
 
-- code names for members
-- call-and-response authentication phrases
-- multiple rotating verification phrases instead of one permanent code
-- neutral sanctuaries / safe houses across the Minecraft world
-- covert clothing and masks for high-risk operations
-- compartmentalized ranks and information flow
-- infiltration of courts, guilds, factions and empires
-- suppliers, operators and cleanup/support divisions
-- internal documentation and mission communication
+- Node.js 20+
+- a Discord application / bot
+- a Discord server for command registration
 
-## What the bot is meant to support
+```bash
+npm install
+cp .env.example .env
+npm start
+```
 
-Alr-Sirr can become the system that ties those ideas together.
+Configure `.env`:
 
-Potential bot responsibilities include:
+```env
+DISCORD_TOKEN=your_bot_token
+DISCORD_CLIENT_ID=your_application_id
+DISCORD_GUILD_ID=your_server_id
+ORDER_ADMIN_ROLE_ID=optional_command_role_id
+```
+
+Never commit the real bot token.
+
+## Storage
+
+Runtime state is written to:
 
 ```txt
-MEMBERSHIP
-  code names
-  ranks
-  clearance levels
-  compartmentalized access
-
-OPERATIONS
-  mission creation
-  mission assignment
-  operation logs
-  status updates
-
-SECURITY
-  challenge / response phrases
-  restricted channels
-  role-based information access
-
-LORE
-  Order documentation
-  doctrine
-  ring structure
-  character / operative records
-
-MINECRAFT
-  faction coordination
-  sanctuary records
-  operation targets
-  server-event support
+data/order.json
 ```
 
-## Project status
+That file is intentionally ignored by Git so live member, mission, and sanctuary data is not committed to the repository.
 
-**Alr-Sirr 3.0 is currently a concept/reconstruction project.**
+## Structure
 
-This repository does not yet contain the full production bot. The purpose of this README is to preserve the actual product and lore direction so the eventual rebuild starts from a defined identity instead of an empty repository.
+```txt
+src/
+  index.js       Discord client, handlers, command runtime
+  commands.js    slash-command definitions + ring model
+  storage.js     persistent JSON store
+data/
+  .gitkeep
+.env.example
+package.json
+```
 
 ## Direction
 
-The next version should turn the lore into real systems:
-
-```txt
-Discord commands
-      ↓
-permissions + clearance
-      ↓
-missions + records
-      ↓
-Order hierarchy
-      ↓
-Minecraft roleplay operations
-```
+This is a working foundation, not the final form. Future expansion can add Discord-role synchronization, richer mission assignment, audit logs, configurable doctrine, encrypted/external persistence, and optional Minecraft-server integration.
 
 ---
 
