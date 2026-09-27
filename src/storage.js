@@ -6,20 +6,38 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '..', 'data');
 const dataFile = path.join(dataDir, 'order.json');
 
-const defaults = {
+export const defaults = {
   members: {},
   missions: [],
   sanctuaries: [],
+  cells: [],
+  intel: [],
+  deadDrops: [],
+  decrees: [],
+  reports: [],
+  sanctions: [],
+  audit: [],
   countersigns: [
     { challenge: 'When the moon is hidden?', response: 'Its light still remains.' },
     { challenge: 'Who judges the crown?', response: 'Those beyond its reach.' },
     { challenge: 'What survives the eclipse?', response: 'The Order.' },
     { challenge: 'What is given may be?', response: 'Taken.' },
     { challenge: 'Where does Qamar stand?', response: 'Between light and shadow.' }
-  ]
+  ],
+  settings: {
+    directiveIndex: 0
+  }
 };
 
 let queue = Promise.resolve();
+
+function mergeDefaults(raw = {}) {
+  return {
+    ...structuredClone(defaults),
+    ...raw,
+    settings: { ...defaults.settings, ...(raw.settings ?? {}) }
+  };
+}
 
 async function ensureStore() {
   await fs.mkdir(dataDir, { recursive: true });
@@ -33,7 +51,7 @@ async function ensureStore() {
 export async function readStore() {
   await ensureStore();
   const raw = await fs.readFile(dataFile, 'utf8');
-  return { ...structuredClone(defaults), ...JSON.parse(raw) };
+  return mergeDefaults(JSON.parse(raw));
 }
 
 export function updateStore(mutator) {
@@ -44,4 +62,15 @@ export function updateStore(mutator) {
     return result;
   });
   return queue;
+}
+
+export function addAudit(store, action, actorId, details = {}) {
+  store.audit.push({
+    id: store.audit.length + 1,
+    action,
+    actorId,
+    details,
+    at: new Date().toISOString()
+  });
+  if (store.audit.length > 1000) store.audit = store.audit.slice(-1000);
 }
