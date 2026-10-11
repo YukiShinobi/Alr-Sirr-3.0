@@ -193,3 +193,10 @@ data/
 **Power is given. Power can be taken.**
 
 </div>
+
+
+## Scope and maintenance — October 2026
+
+A Discord/Minecraft roleplay command project. This is separate from the commercially presented Veyra bot; review guild permissions and command registration before production use.
+
+These repositories document individual experiments or products. A README describes the codebase but is not a claim of independently verified production availability. For current flagship work see [Project Creation](https://github.com/YukiShinobi/project-creation), [Veyra](https://github.com/YukiShinobi/YukiShinobi-veyra), and [Simply Management](https://github.com/YukiShinobi/SIMPLYMANAGEMENT-WEBSITE).
